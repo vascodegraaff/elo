@@ -30,6 +30,8 @@ class Game:
             return p2 + " won"
 #r1 & r2 are ratings of each player, res is the result, 1 means r1 wins, 0 means r2 wins
 def calc(p1, p2, res):
+    if p1 == p2:
+        return
     #estimation of player 1 and player 2 winning
     e1 = 1/(1+pow(10,((p2.rating -p1.rating)/400)))
     e2 = 1/(1+pow(10,((p1.rating-p2.rating)/400)))
@@ -47,13 +49,16 @@ def calc(p1, p2, res):
     
 
 def main():
-    p1 = Player()
-    p2 = Player()
-    print(p1)
-    print(p2)
-    calc(p1,p2, bool(random.getrandbits(1)))
-    print(p1)
-    print(p2)
+    players = []
+    [players.append(Player()) for i in range(20)]
+    
+    # https://stackoverflow.com/questions/464864/how-to-get-all-possible-combinations-of-a-list-s-elements
+    
+    for i in range(len(players)):
+        for j in range(len(players)-1):
+            calc(players[i], players[j], bool(random.getrandbits(1)))
+            print(players[i])
+#            print(players[j])
 
 
 
