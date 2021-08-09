@@ -41,7 +41,15 @@ class Player:
     def update(self, rating):
         self.rating = rating
 
-
+    def adjustK(self):
+        if(len(self.games) < 5):
+            self.k = 64
+        elif(len(self.games) < 10):
+            self.k = 32
+        elif (len(self.games) < 20):
+            self.k = 24
+        elif (len(self.games) < 40):
+            self.k = 16
 
 # The game object gets stored inside the player object, p1 is the player, p2 is the opponent, res is whether or not p1 wins, rating is p1's new rating 
 class Game:
@@ -78,13 +86,16 @@ def calc(p1, p2):
     id = str(uuid.uuid4())[:8]
     p1.games.append(Game(id, p1,p2,res, p1.rating))
     p2.games.append(Game(id, p2,p1,not res, p2.rating))
+    #updates the K value afte the games
+    p1.adjustK()
+    p2.adjustK()
 
 
 def main():
     state = State()
     state.update()
 
-    progress = [i.rating for i in state.players[50].games]
+    progress = [i.rating for i in state.players[99].games]
     n = [i for i in range(len(progress))]
     plt.plot(n, progress)
     plt.show()
